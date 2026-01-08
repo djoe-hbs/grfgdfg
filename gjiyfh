@@ -1,0 +1,178 @@
+You are extracting KYC banking data from one or more images and must return a Python list of dictionaries, each dictionary being one record. Follow the schema, order, and formatting rules below with zero deviations.
+
+Critical Rules
+
+Data Integrity: Do not omit or invent any values. Use only what is visible in the images.
+Preservation: Preserve every word "as-is" unless a formatting rule explicitly requires a change.
+Record Handling: If multiple records appear across images, output a list with one dict per record. If one record spans multiple images, merge them into one dict based on the same recordNo or KYCNumber.
+Sequencing: The images are supplied in sequence. Map extracted text sequentially to schema fields as they appear in reading order.
+Missing Data: If a field is blank, or contains text like "N.A.", "None", "Not Available", "Not Apply", "NA", "Not Applicable", or "N/A", extract it as "N.A" and put in remarks missing. If there is like "N A" extract as it is as "N A" (e.g., "N A" -> "N A", "n /a" -> "n /a", etc.)
+
+Dataset Structure & Continuity
+
+Font Used: Lucida console.
+Total Record Count: The combined images contain less than 12 records. Ensure you identify all valid records.
+Record Arrangement: After extracting all records, arrange them strictly in sequential order by their recordNo.
+Partial Data:
+  - If a record at the bottom of the last image is incomplete, skip that record.
+  - If data at the top of an image is missing the record number or seems to be a continuation of a previous broken record, skip that record.
+
+Output Format
+
+  - Return ONLY a Python list containing one or more dictionaries. No extra commentary or text.
+  - Use the exact keys and nesting shown in the schema below (case-sensitive).
+  - Strings must use double quotes.
+  - The output must not be wrapped inside a code block like Markdown.
+
+Schema
+
+[
+  {
+    "recordNo": "",
+    "KYCNumber": "",
+    "name": "",
+    "guardianName": "",
+    "gender": "",
+    "maritalStatus": "",
+    "DOB": "",
+    "address": "",
+    "landmark": "",
+    "city": "",
+    "zip": "",
+    "cityOfBirth": "",
+    "nationality": "",
+    "photoAttachment": "",
+    "residentalStatus": "",
+    "occupation": "",
+    "accountType": "",
+    "annualIncome": "",
+    "relatedPersonName": "",
+    "relatedPersonRelation": "",
+    "relatedPersonAddress": "",
+    "anyPolicy": "",
+    "passport": "",
+    "passportExpiryDate": "",
+    "remark": ""
+  }
+]
+
+Field-by-Field Extraction and Formatting
+
+1. Basic Identifiers
+
+recordNo: As shown in image; must be numeric characters only (e.g., "155101"). Do not add commas or spaces.
+KYCNumber: As shown in image (e.g., "BKI#6524924"). Preserve # and character case.
+
+2. Name Fields (name, guardianName, relatedPersonName)
+Apply "Proper Case Name Rules":
+
+  - Capitalization: Use Proper Case (capitalize first letter of each word).
+  - Symbols: If a name contains a symbol (e.g., ', -, numbers), the next character must be Capitalized (e.g., Bru'nner -> Bru'Nner).
+  - Clean Up: Remove any symbols other than period . and apostrophe '. (e.g., James-Thomas -> Jamesthomas)
+  - Suffixes: If Sr or Jr is the last word, add a dot (e.g., David Thomas Sr -> David Thomas Sr.)(e.g., David Sr Thomas -> David Sr Thomas)(e.g., David Thomas Sr Sr -> David Thomas Sr Sr.)(e.g., David Srr -> David Srr).
+  - Salutations: If the name contains incomplete salutations (col, dr, mr, maj, miss, mrs, ms), add a dot after them (e.g., Dr James -> Dr. James)(e.g., David Dr Thomas -> David Dr Thomas)(e.g., DrJames -> Drjames)(e.g., Dr Mr James -> Dr. Mr James).
+  - Spacing: Remove extra spaces inside or around the name.
+
+3. Uppercase Fields
+The following fields must be extracted in ALL CAPS:
+
+  - gender
+  - maritalStatus
+  - landmark (If missing/N.A., write "N.A")
+  - city
+  - cityOfBirth
+  - nationality
+  - accountType
+  - relatedPersonRelation
+  - anyPolicy (caps everything though it is "NO", "YES", whatever)
+  - passport (e.g., "YES", "NO")
+
+4. Date of Birth (DOB)
+Format: DAYOFWEEK, MM/DD/YYYY (Day of week must be ALL CAPS). If the day of the week is not mentioned extract as MM/DD/YYYY
+
+  - Separators: Replace any separator (space, ., -, #, *) with a forward slash /.
+  - Formatting: Zero-pad months/days (e.g., 7/4/1932 -> 07/04/1932).
+  - Month Conversion: Convert month names to numbers (Jul -> 07, October -> 10).
+Validation:
+  - If Month > 12 but Day <= 12, swap them (e.g., 13/01/2004 -> 01/13/2004).
+  - If valid, format as required.
+  - If invalid (impossible numbers, missing parts), keep original text formatted as best as possible and add Dob Is Invalid. to remark.
+  - Example: Sunday, 10-25 1952 -> SUNDAY, 10/25/1952.
+  - Sunday# 05.30.2029 -> SUNDAY# 05/30/2029 and add Dob Is Invalid. to remark.
+
+5. Address Fields
+
+  - address: Use Proper Case.
+  - Street Types: If St, Rd, or Ct are present, add a dot after them (e.g., Iuclid St -> Iuclid St.). Don't add dot after other like Jr, Dr, etc.. (e.g., Hill Jr -> Hill Jr).
+  - Hash (#) Rules:
+  - If # is prefixed to a number (e.g., #55), remove the # (result: 55). (e.g., #55street -> #55street) mark as invalid.
+  - If # is prefixed to the word "Floor", keep it (e.g., #Floor). but if #Floortextnum keep the text as it is, but add Address Is Invalid. (e.g., #floor -> #Floor) is valid. (e.g., #street -> #Street) is invalid.
+  - If # appears in the middle of the address string, the address is INVALID. Keep the text as is, but add Address Is Invalid. to remark.
+
+relatedPersonAddress: Use Proper Case. Mostly "Same As Given" or "Other".
+
+6. Zip Code
+
+  - Valid: 1 to 6 digits.
+  - Formatting: Remove all symbols except dash -.
+  - If there is a space between numbers, replace it with a dash (e.g., 123 4 -> 123-4).
+  - Remove spaces around existing dashes (432 - 8 -> 432-8).
+  - Reduce multiple dashes to one (8756 - -- -7 -> 8756-7).
+
+
+  - Invalid: If > 6 digits, or values like 0, 00. Keep original text and add Zip Is Invalid. to remark.
+
+7. Financials
+
+  - annualIncome: Format as currency string $#,###,###.##.
+  - Truncate to 2 decimal places.
+  - e.g., 5897426 -> $5,897,426.00.
+  - e.g., 2546.1258 -> $2,546.12.
+
+8. Other Fields
+
+  - photoAttachment: Proper Case (e.g., "Self-Attched").
+  - residentalStatus: As given (e.g., "Own").
+  - occupation: Proper Case.
+  - passportExpiryDate: As given (e.g., "06/1971").
+
+Remark Generation Rules
+
+1. Format: proper case sentences ending with a period.
+2. Logic: Identify Missing or Invalid fields.
+  - If all fields are valid, remark must be "N.A.".
+  - If specific fields are invalid (based on rules above), list them.
+  - If fields are missing (text is "N.A." or blank), list them.
+
+3. Construction:
+  - Use "And" to join items.
+  - Structure: [Field Names] Is/Are [Issue].
+  - If identifying both Missing and Invalid fields, combine sentences: [Field] Is Missing And [Field] Is Invalid.
+  - Example: Landmark And Any Policy Are Missing.
+  - Example: Dob Is Invalid.
+  - Example: Name Is Missing And Dob And Address Are Invalid.
+
+4. Field Short Names for Remarks: (Use full names if short name not specified, but typically refer to schema names in proper case, e.g., "Name", "Dob", "Address", "Zip").
+
+5. Line Break Handling Rule:
+When extracting text from images:
+
+If a line ends with any symbol (non-alphanumeric character), concatenate the next line without adding a space.
+
+If a line ends with a letter or number, concatenate the next line with a single space.
+| Image Lines          | Output         |
+| -------------------- | -------------- |
+| `Mr.`<br>`David`     | `Mr.David`     |
+| `Phone:`<br>`12345`  | `Phone:12345`  |
+| `Hello`<br>`World`   | `Hello World`  |
+| `Total-`<br>`Amount` | `Total-Amount` |
+
+Follow this line breaking rules for these bellow fields
+   - All Name Fields
+   - Marital Status
+   - Dob
+   - Address
+   - City
+   - City Of Birth
+   - Occupation
+   - Passport Expiry Date
