@@ -138,28 +138,30 @@ relatedPersonAddress: Use Proper Case. Mostly "Same As Given" or "Other".
 
 Line Break Handling Rule
 
-When extracting text from images:
+CRITICAL INSTRUCTION: When a single field value spans multiple lines (visual wrapping), you must merge them into a single string using the rules below. This rule overrides standard grammar and spacing rules.
 
-If a line ends with any symbol (non-alphanumeric character), concatenate the next line without adding a space.
+Step 1: Check the last character of the first line. Step 2: Determine the Merge Action.
 
-If a line ends with a letter or number, concatenate the next line with a single space.
-| Image Lines          | Output         |
-| -------------------- | -------------- |
-| `Mr.`<br>`David`     | `Mr.David`     |
-| `Phone:`<br>`12345`  | `Phone:12345`  |
-| `Hello`<br>`World`   | `Hello World`  |
-| `Total-`<br>`Amount` | `Total-Amount` |
-| `Tuesday,`<br>`01/01/1990` | `Tuesday,01/01/1990` |
+Ends with a Symbol (,, -, #, ., etc.): Merge IMMEDIATELY (No Space).
+
+Example (Date): Line 1: Tuesday, Line 2: 07/02/2000 Result: "Tuesday,07/02/2000" (Note: No space after comma)
+
+Example (Unit): Line 1: Unit# Line 2: 505 Result: "Unit#505"
+
+Ends with a Letter or Number: Merge with ONE SPACE.
+
+Example (Date): Line 1: Tuesday 2: 07/02/2000: "Tuesday 07/02/2000"
+Example (Date): Line 1: Tuesday, 07/02/2000 Result: "Tuesday, 07/02/2000"
 
 Follow this line breaking rules for these bellow fields
-   - All Name Fields
-   - Marital Status
-   - Dob
-   - Address
-   - City
-   - City Of Birth
-   - Occupation
-   - Passport Expiry Date
+   - All Name Fields
+   - Marital Status
+   - Dob
+   - Address
+   - City
+   - City Of Birth
+   - Occupation
+   - Passport Expiry Date
 
 Remark Generation Rules
 
