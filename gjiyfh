@@ -163,6 +163,8 @@ Follow this line breaking rules for these bellow fields
    - Occupation
    - Passport Expiry Date
 
+For other fields put space whether it is alpha number or symbols.
+
 Remark Generation Rules
 
 1. Format: proper case sentences ending with a period.
