@@ -149,6 +149,7 @@ If a line ends with a letter or number, concatenate the next line with a single 
 | `Phone:`<br>`12345`  | `Phone:12345`  |
 | `Hello`<br>`World`   | `Hello World`  |
 | `Total-`<br>`Amount` | `Total-Amount` |
+| `Tuesday,`<br>`01/01/1990` | `Tuesday,01/01/1990` |
 
 Follow this line breaking rules for these bellow fields
    - All Name Fields
