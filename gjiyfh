@@ -103,7 +103,7 @@ Validation:
 5. Address Fields
 
   - address: Use Proper Case.
-  - Street Types: If St, Rd, or Ct are present, add a dot after them (e.g., Iuclid St -> Iuclid St.). Don't add dot after other like Jr, Dr, etc.. (e.g., Hill Jr -> Hill Jr).
+  - Street Types: If St, Rd, or Ct are present, add a dot after them (e.g., Iuclid St -> Iuclid St.). Don't add dot after other like Jr, Dr, etc.. (e.g., Hill Jr -> Hill Jr). Only add dot after St/Rd/Ct don't add dot after except this three though the words looks similar like Street, Road, City (Don't add dot here).
   - Hash (#) Rules:
   - If # is prefixed to a number (e.g., #55), remove the # (result: 55). (e.g., #55street -> #55street) mark as invalid.
   - If # is prefixed to the word "Floor", keep it (e.g., #Floor). but if #Floortextnum keep the text as it is, but add Address Is Invalid. (e.g., #floor -> #Floor) is valid. (e.g., #street -> #Street) is invalid.
