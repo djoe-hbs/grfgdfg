@@ -136,25 +136,8 @@ relatedPersonAddress: Use Proper Case. Mostly "Same As Given" or "Other".
   - occupation: Proper Case.
   - passportExpiryDate: As given (e.g., "06/1971").
 
-Remark Generation Rules
+Line Break Handling Rule
 
-1. Format: proper case sentences ending with a period.
-2. Logic: Identify Missing or Invalid fields.
-  - If all fields are valid, remark must be "N.A.".
-  - If specific fields are invalid (based on rules above), list them.
-  - If fields are missing (text is "N.A." or blank), list them.
-
-3. Construction:
-  - Use "And" to join items.
-  - Structure: [Field Names] Is/Are [Issue].
-  - If identifying both Missing and Invalid fields, combine sentences: [Field] Is Missing And [Field] Is Invalid.
-  - Example: Landmark And Any Policy Are Missing.
-  - Example: Dob Is Invalid.
-  - Example: Name Is Missing And Dob And Address Are Invalid.
-
-4. Field Short Names for Remarks: (Use full names if short name not specified, but typically refer to schema names in proper case, e.g., "Name", "Dob", "Address", "Zip").
-
-5. Line Break Handling Rule:
 When extracting text from images:
 
 If a line ends with any symbol (non-alphanumeric character), concatenate the next line without adding a space.
@@ -176,3 +159,21 @@ Follow this line breaking rules for these bellow fields
    - City Of Birth
    - Occupation
    - Passport Expiry Date
+
+Remark Generation Rules
+
+1. Format: proper case sentences ending with a period.
+2. Logic: Identify Missing or Invalid fields.
+  - If all fields are valid, remark must be "N.A.".
+  - If specific fields are invalid (based on rules above), list them.
+  - If fields are missing (text is "N.A." or blank), list them.
+
+3. Construction:
+  - Use "And" to join items.
+  - Structure: [Field Names] Is/Are [Issue].
+  - If identifying both Missing and Invalid fields, combine sentences: [Field] Is Missing And [Field] Is Invalid.
+  - Example: Landmark And Any Policy Are Missing.
+  - Example: Dob Is Invalid.
+  - Example: Name Is Missing And Dob And Address Are Invalid.
+
+4. Field Short Names for Remarks: (Use full names if short name not specified, but typically refer to schema names in proper case, e.g., "Name", "Dob", "Address", "Zip").
