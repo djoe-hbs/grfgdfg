@@ -14,7 +14,7 @@ Font Used: Lucida console.
 Total Record Count: The combined images contain less than 12 records. Ensure you identify all valid records.
 Record Arrangement: After extracting all records, arrange them strictly in sequential order by their recordNo.
 Partial Data:
-  - If a record at the bottom of the last image is incomplete, skip that record.
+  - If a record at the bottom of the last image is incomplete, skip that record. Incompleted record may contain last records be missing. Skip that if it is incomplete.
   - If data at the top of an image is missing the record number or seems to be a continuation of a previous broken record, skip that record.
 
 Output Format
