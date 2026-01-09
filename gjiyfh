@@ -132,9 +132,9 @@ relatedPersonAddress: Use Proper Case. Mostly "Same As Given" or "Other".
 8. Other Fields
 
   - photoAttachment: Proper Case (e.g., "Self-Attched").
-  - residentalStatus: As given (e.g., "Own").
+  - residentalStatus: As given (e.g., "Own"). There is no validtion rule for this. If missing, add in remarks.
   - occupation: Proper Case.
-  - passportExpiryDate: As given (e.g., "06/1971").
+  - passportExpiryDate: As given (e.g., "06/1971"). There is no validtion rule for this. If missing, add in remarks.
 
 Line Break Handling Rule
 
