@@ -77,7 +77,7 @@ The following fields must be extracted in ALL CAPS:
 
   - gender
   - maritalStatus
-  - landmark (If missing/"N.A.", "None", "Not Available", "Not Apply", "NA", "Not Applicable", or "N/A"., write "N.A")
+  - landmark (If missing/"N.A.")
   - city
   - cityOfBirth
   - nationality
@@ -137,6 +137,9 @@ relatedPersonAddress: Use Proper Case. Mostly "Same As Given" or "Other". If any
   - residentalStatus: As given (e.g., "Own"). There is no validtion rule for this. If missing, add in remarks.
   - occupation: Proper Case.If any symbol or number comes the next letter should be in caps.
   - passportExpiryDate: As given (e.g., "06/1971"). There is no validtion rule for this. If missing, add in remarks.
+9. Landmark
+  - In Landmark Field strictly check aprt from these like "N.A.", "None", "Not Available", "Not Apply", "NA", "Not Applicable", or "N/A" any other words comes put as it is .
+  - If "N.A.", "None", "Not Available", "Not Apply", "NA", "Not Applicable", or "N/A" these comes put as "N.A" AND MENTION IN REMARK.
 
 Line Break Handling Rule
 
