@@ -6,7 +6,7 @@ Data Integrity: Do not omit or invent any values. Use only what is visible in th
 Preservation: Preserve every word "as-is" unless a formatting rule explicitly requires a change.
 Record Handling: If multiple records appear across images, output a list with one dict per record. If one record spans multiple images, merge them into one dict based on the same recordNo or KYCNumber.
 Sequencing: The images are supplied in sequence. Map extracted text sequentially to schema fields as they appear in reading order.
-Missing Data: If a field is blank, or contains text like "N.A.", "None", "Not Available", "Not Apply", "NA", "Not Applicable", or "N/A", extract it as "N.A" and put in remarks missing. If there is like "N A" extract as it is as "N A" (e.g., "N A" -> "N A", "n /a" -> "n /a", etc.)
+Missing Data: If a field is blank, or contains text "N.A.", "None", "Not Available", "Not Apply", "NA", "Not Applicable", or "N/A", extract it as "N.A" and put in remarks missing. If any other words comes in place of this except "N.A.", "None", "Not Available", "Not Apply", "NA", "Not Applicable", or "N/A", put as it is. If there is like "N A" extract as it is as "N A" (e.g., "N A" -> "N A", "n /a" -> "n /a", etc.)
 
 Dataset Structure & Continuity
 
@@ -60,25 +60,24 @@ Field-by-Field Extraction and Formatting
 
 1. Basic Identifiers
 
-recordNo: As shown in image; must be numeric characters only (e.g., "155101"). Do not add commas or spaces.
+recordNo: As shown in image; must be numeric characters only (e.g., "155101"). Do not add commas or spaces or Alphabets.
 KYCNumber: As shown in image (e.g., "BKI#6524924"). Preserve # and character case.
 
 2. Name Fields (name, guardianName, relatedPersonName)
 Apply "Proper Case Name Rules":
 
   - Capitalization: Use Proper Case (capitalize first letter of each word).
-  - Symbols: If a name contains a symbol (e.g., ', -, numbers), the next character must be Capitalized (e.g., Bru'nner -> Bru'Nner).
+  - Symbols: If a name contains a symbol (e.g., ., numbers), the next character must be Capitalized (e.g., Bru'nner -> Bru'Nner).
   - Clean Up: Remove any symbols other than period . and apostrophe '. (e.g., James-Thomas -> Jamesthomas)
   - Suffixes: If Sr or Jr is the last word, add a dot (e.g., David Thomas Sr -> David Thomas Sr.)(e.g., David Sr Thomas -> David Sr Thomas)(e.g., David Thomas Sr Sr -> David Thomas Sr Sr.)(e.g., David Srr -> David Srr).
-  - Salutations: If the name contains incomplete salutations (col, dr, mr, maj, miss, mrs, ms), add a dot after them (e.g., Dr James -> Dr. James)(e.g., David Dr Thomas -> David Dr Thomas)(e.g., DrJames -> Drjames)(e.g., Dr Mr James -> Dr. Mr James).
-  - Spacing: Remove extra spaces inside or around the name.
+  - Salutations: If the name contains incomplete salutations (col, dr, mr, maj, miss, mrs, ms), add a dot after them (e.g., Dr James -> Dr. James)(e.g., David Dr Thomas -> David Dr. Thomas)(e.g., Dr Mr James -> Dr. Mr James).
 
 3. Uppercase Fields
 The following fields must be extracted in ALL CAPS:
 
   - gender
   - maritalStatus
-  - landmark (If missing/N.A., write "N.A")
+  - landmark (If missing/"N.A.", "None", "Not Available", "Not Apply", "NA", "Not Applicable", or "N/A"., write "N.A")
   - city
   - cityOfBirth
   - nationality
@@ -86,6 +85,7 @@ The following fields must be extracted in ALL CAPS:
   - relatedPersonRelation
   - anyPolicy (caps everything though it is "NO", "YES", whatever)
   - passport (e.g., "YES", "NO")
+  - DOB
 
 4. Date of Birth (DOB)
 Format: DAYOFWEEK, MM/DD/YYYY (Day of week must be ALL CAPS). If the day of the week is not mentioned extract as MM/DD/YYYY
@@ -96,7 +96,7 @@ Format: DAYOFWEEK, MM/DD/YYYY (Day of week must be ALL CAPS). If the day of the 
 Validation:
   - If Month > 12 but Day <= 12, swap them (e.g., 13/01/2004 -> 01/13/2004).
   - If valid, format as required.
-  - If invalid (impossible numbers, missing parts), keep original text formatted as best as possible and add Dob Is Invalid. to remark.
+  - If invalid (impossible numbers, missing parts, spelling mistake in the month or DAYOFWEEK), keep original text formatted as best as possible and add Dob Is Invalid. to remark.
   - Example: Sunday, 10-25 1952 -> SUNDAY, 10/25/1952.
   - Sunday# 05.30.2029 -> SUNDAY# 05/30/2029 and add Dob Is Invalid. to remark.
 
@@ -105,11 +105,13 @@ Validation:
   - address: Use Proper Case.
   - Street Types: If St, Rd, or Ct are present, add a dot after them (e.g., Iuclid St -> Iuclid St.). Don't add dot after other like Jr, Dr, etc.. (e.g., Hill Jr -> Hill Jr). Only add dot after St/Rd/Ct don't add dot after except this three though the words looks similar like Street, Road, City (Don't add dot here).
   - Hash (#) Rules:
-  - If # is prefixed to a number (e.g., #55), remove the # (result: 55). (e.g., #55street -> #55street) mark as invalid.
+  - If # is prefixed to a number (e.g., #55), remove the # (result: 55). 
+  - If # comes with alphanumeric characters (e.g., #55street -> #55Street) put as it is and mark as invalid.
   - If # is prefixed to the word "Floor", keep it (e.g., #Floor). but if #Floortextnum keep the text as it is, but add Address Is Invalid. (e.g., #floor -> #Floor) is valid. (e.g., #street -> #Street) is invalid.
   - If # appears in the middle of the address string, the address is INVALID. Keep the text as is, but add Address Is Invalid. to remark.
+  - If any number or symbol comes the next letter should be in caps.
 
-relatedPersonAddress: Use Proper Case. Mostly "Same As Given" or "Other".
+relatedPersonAddress: Use Proper Case. Mostly "Same As Given" or "Other". If any number or symbol comes the next letter should be in caps.
 
 6. Zip Code
 
@@ -131,9 +133,9 @@ relatedPersonAddress: Use Proper Case. Mostly "Same As Given" or "Other".
 
 8. Other Fields
 
-  - photoAttachment: Proper Case (e.g., "Self-Attched").
+  - photoAttachment: Proper Case (e.g., "Self-Attched"). If any symbol or number comes the next letter should be in caps.
   - residentalStatus: As given (e.g., "Own"). There is no validtion rule for this. If missing, add in remarks.
-  - occupation: Proper Case.
+  - occupation: Proper Case.If any symbol or number comes the next letter should be in caps.
   - passportExpiryDate: As given (e.g., "06/1971"). There is no validtion rule for this. If missing, add in remarks.
 
 Line Break Handling Rule
@@ -150,8 +152,9 @@ Example (Unit): Line 1: Unit# Line 2: 505 Result: "Unit#505"
 
 Ends with a Letter or Number: Merge with ONE SPACE.
 
-Example (Date): Line 1: Tuesday 2: 07/02/2000: "Tuesday 07/02/2000"
+Example (Date): Line 1: Tuesday Line 2: 07/02/2000: "Tuesday 07/02/2000"
 Example (Date): Line 1: Tuesday, 07/02/2000 Result: "Tuesday, 07/02/2000"
+Example (Name): Line 1: Albert Thomas Line 2: .James Result "Albert Thomas .James"    
 
 Follow this line breaking rules for these bellow fields
    - All Name Fields
