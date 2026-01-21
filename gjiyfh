@@ -61,7 +61,7 @@ Field-by-Field Extraction and Formatting
 1. Basic Identifiers
 
 recordNo: As shown in image; must be numeric characters only (e.g., "155101"). Do not add commas or spaces or Alphabets.
-KYCNumber: As shown in image (e.g., "BKI#6524924"). Preserve # and character case.
+KYCNumber: As shown in image (e.g., "BKI#NCS-5555#3044650"). Preserve # and character case. The first BKI#NCS-5555# will be same. the next numbers after BKI#NCS-5555# need to be readen. 
 
 2. Name Fields (name, guardianName, relatedPersonName)
 Apply "Proper Case Name Rules":
