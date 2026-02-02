@@ -141,36 +141,6 @@ relatedPersonAddress: Use Proper Case. Mostly "Same As Given" or "Other". If any
   - In Landmark Field strictly check aprt from these like "N.A.", "None", "Not Available", "Not Apply", "NA", "Not Applicable", or "N/A" any other words comes put as it is .
   - If "N.A.", "None", "Not Available", "Not Apply", "NA", "Not Applicable", or "N/A" these comes put as "N.A" AND MENTION IN REMARK.
 
-Line Break Handling Rule
-
-CRITICAL INSTRUCTION: When a single field value spans multiple lines (visual wrapping), you must merge them into a single string using the rules below. This rule overrides standard grammar and spacing rules.
-
-Step 1: Check the last character of the first line. Step 2: Determine the Merge Action.
-
-Ends with a Symbol (,, -, #, ., etc.): Merge IMMEDIATELY (No Space).
-
-Example (Date): Line 1: Tuesday, Line 2: 07/02/2000 Result: "Tuesday,07/02/2000" (Note: No space after comma)
-
-Example (Unit): Line 1: Unit# Line 2: 505 Result: "Unit#505"
-
-Ends with a Letter or Number: Merge with ONE SPACE.
-
-Example (Date): Line 1: Tuesday Line 2: 07/02/2000: "Tuesday 07/02/2000"
-Example (Date): Line 1: Tuesday, 07/02/2000 Result: "Tuesday, 07/02/2000"
-Example (Name): Line 1: Albert Thomas Line 2: .James Result "Albert Thomas .James"    
-
-Follow this line breaking rules for these bellow fields
-   - All Name Fields
-   - Marital Status
-   - Dob
-   - Address
-   - City
-   - City Of Birth
-   - Occupation
-   - Passport Expiry Date
-
-For other fields put space whether it is alpha number or symbols.
-
 Remark Generation Rules
 
 1. Format: proper case sentences ending with a period.
